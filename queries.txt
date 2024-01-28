@@ -1,0 +1,97 @@
+CREATE TABLE users(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    email varchar(255),
+    password varchar(255),
+    role varchar(255)
+);
+
+CREATE TABLE sections(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    semester varchar(255)
+);
+
+CREATE TABLE type(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    status int
+);
+
+CREATE TABLE courses(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    code varchar(255),
+    credit varchar(255),
+    type varchar(255),
+    semester int
+);
+
+CREATE TABLE sessions(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    status int
+);
+
+CREATE TABLE teacher_assign(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    teacher_id int,
+    section_id int,
+    course_id int,
+    session_id int,
+    status int,
+    FOREIGN KEY (teacher_id) REFERENCES users(id),
+    FOREIGN KEY (section_id) REFERENCES sections(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (session_id) REFERENCES sessions(id)
+);
+
+CREATE TABLE num_dist(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    course_id int,
+    teacher_id int,
+    section_id int,
+    session_id int,
+    catagory_name varchar(255),
+    marks int,
+    FOREIGN KEY (teacher_id) REFERENCES users(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (section_id) REFERENCES sections(id),
+    FOREIGN KEY (session_id) REFERENCES sessions(id)
+);
+
+CREATE TABLE enrollment(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    student_id int,
+    course_id int,
+    type_id int,
+    section_id int,
+    teacher_id int,
+    session_id int,
+    status int,
+    FOREIGN KEY (student_id) REFERENCES users(id),
+    FOREIGN KEY (teacher_id) REFERENCES users(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (section_id) REFERENCES sections(id),
+    FOREIGN KEY (session_id) REFERENCES sessions(id),
+    FOREIGN KEY (course_type_id) REFERENCES type(id)
+);
+
+
+// unused table
+CREATE TABLE marks_assign(
+    id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    student_id int,
+    teacher_id int,
+    course_id int,
+    section_id int,
+    session_id int,
+    dist_id int,
+    marks int,
+    FOREIGN KEY (teacher_id) REFERENCES users(id),
+    FOREIGN KEY (session_id) REFERENCES sessions(id),
+    FOREIGN KEY (student_id) REFERENCES users(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id),
+    FOREIGN KEY (section_id) REFERENCES sections(id),
+    FOREIGN KEY (dist_id) REFERENCES num_dist(id)
+);
